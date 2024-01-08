@@ -2,7 +2,7 @@ package register;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import loginsys.LoginController;
+import selectuser.*;
 
 class RegisterView extends JPanel{
     private JTextField firstnameField;
@@ -31,7 +31,7 @@ class RegisterView extends JPanel{
         firstnameLabel.setBounds(400, 110, 100, 20);
         add(firstnameLabel);
 
-        JTextField firstnameField = new JTextField();
+        firstnameField = new JTextField();
         firstnameField.setBounds(400, 140, 250, 40);
         add(firstnameField);
 
@@ -41,7 +41,7 @@ class RegisterView extends JPanel{
         lastnameLabel.setBounds(400, 180, 100, 20);
         add(lastnameLabel);
 
-        JTextField lastnameField = new JTextField();
+        lastnameField = new JTextField();
         lastnameField.setBounds(400, 210, 250, 40);
         add(lastnameField);
 
@@ -51,9 +51,9 @@ class RegisterView extends JPanel{
         usernameRegisterLabel.setBounds(400, 250, 100, 20);
         add(usernameRegisterLabel);
 
-        JTextField usernameRegisterField = new JTextField();
-        usernameRegisterField.setBounds(400, 280, 250, 40);
-        add(usernameRegisterField);
+        usernameField = new JTextField();
+        usernameField.setBounds(400, 280, 250, 40);
+        add(usernameField);
 
         JLabel passwordRegisterLabel = new JLabel("Password");
         passwordRegisterLabel.setFont(new Font("Monospaced Plain", Font.PLAIN, 15));
@@ -61,9 +61,9 @@ class RegisterView extends JPanel{
         passwordRegisterLabel.setBounds(400, 320, 100, 20);
         add(passwordRegisterLabel);
 
-        JPasswordField passwordRegisterField = new JPasswordField();
-        passwordRegisterField.setBounds(400, 350, 250, 40);
-        add(passwordRegisterField);
+        passwordField = new JPasswordField();
+        passwordField.setBounds(400, 350, 250, 40);
+        add(passwordField);
 
         JLabel confirmPasswordRegisterLabel = new JLabel("Confirm Password");
         confirmPasswordRegisterLabel.setFont(new Font("Monospaced Plain", Font.PLAIN, 15));
@@ -71,21 +71,21 @@ class RegisterView extends JPanel{
         confirmPasswordRegisterLabel.setBounds(400, 390, 200, 20);
         add(confirmPasswordRegisterLabel);
 
-        JPasswordField confirmPasswordRegisterField = new JPasswordField();
-        confirmPasswordRegisterField.setBounds(400, 420, 250, 40);
-        add(confirmPasswordRegisterField);
+        confirmPasswordField = new JPasswordField();
+        confirmPasswordField.setBounds(400, 420, 250, 40);
+        add(confirmPasswordField);
 
 
 
-        JButton registerButton = new JButton("REGISTER");
-         registerButton.setFont(new Font("Arial", Font.BOLD, 15));
+        registerButton = new JButton("REGISTER");
+        registerButton.setFont(new Font("Arial", Font.BOLD, 15));
         registerButton.setBackground(new Color(252, 187, 109));
         registerButton.setBounds(400, 500, 250, 40);  
         add(registerButton);
 
         cancelRegisterButton = new JButton("CANCEL");
         cancelRegisterButton.setFont(new Font("Arial", Font.BOLD, 15));
-        cancelRegisterButton.setBackground(new Color(252, 187, 109));
+        cancelRegisterButton.setBackground(Color.WHITE);
         cancelRegisterButton.setBounds(400, 560, 250, 40);  
         add(cancelRegisterButton);
 		cancelRegisterButton.addActionListener(new ActionListener() {
@@ -98,7 +98,8 @@ class RegisterView extends JPanel{
 			JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(parent);
 			if (frame != null) {
 				frame.getContentPane().removeAll(); // Remove all components from the frame
-				new LoginController(frame); // Show the login panel using LoginController
+				UserSelection panel = new UserSelection(frame); // Show the login panel using LoginController
+				panel.addUserSelectionToFrame(frame);
 				frame.revalidate();
 				frame.repaint();
 				}
@@ -118,10 +119,14 @@ class RegisterView extends JPanel{
         registerButton.addActionListener(listener);
     }
 
-    public String getName() {
+    public String getFirstName() {
         return firstnameField.getText();
     }
 
+    public String getLastName() {
+        return lastnameField.getText();
+    }
+	
     public String getUsername() {
         return usernameField.getText();
     }
@@ -131,18 +136,24 @@ class RegisterView extends JPanel{
         String input = new String(pass);
         return input;
     }
+	
+	public String getConfirmPassword() {
+        char[] pass = confirmPasswordField.getPassword();
+        String input = new String(pass);
+        return input;
+    }
 
 
-    public void showLoginSuccessMessage() {
-        JOptionPane.showMessageDialog(null, "Login successful!");
+    public void showRegisterSuccessMessage(String firstName, String lastName) {
+        JOptionPane.showMessageDialog(null, "Hello "+firstName+" "+lastName+ "! Welcome to Budget Tracer");
     }
 
     public void showInvalidPasswordMessage() {
-        JOptionPane.showMessageDialog(null, "Invalid password.");
+        JOptionPane.showMessageDialog(null, "Password Not Match! Please try again.");
     }
 
-    public void showUsernameNotExistMessage() {
-        JOptionPane.showMessageDialog(null, "Username doesn't exist.");
+    public void showUsernameAlreadyExistMessage() {
+        JOptionPane.showMessageDialog(null, "Username is already taken! Please try again.");
     }
 
 }
